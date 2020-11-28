@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct Layout {
     
-    enum Orientation: Hashable {
+    public enum Orientation: Hashable {
 
         case iPhone
         case iPhoneLandscape
@@ -46,7 +46,7 @@ public struct Layout {
     let orientation: Orientation
     let view: AnyView
     
-    init<V: View>(_ orientation: Orientation, _ view: V) {
+    public init<V: View>(_ orientation: Orientation, _ view: V) {
         self.orientation = orientation
         self.view = AnyView(view)
     }
