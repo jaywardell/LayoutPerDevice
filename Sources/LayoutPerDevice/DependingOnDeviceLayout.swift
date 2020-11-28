@@ -70,56 +70,85 @@ public struct DependingOnDeviceLayout {
         self.orientations = orientations
     }
     
+    var iPadPortraitIgnoringHomeButton: some View {
+        orientations[.iPadPortrait] ??
+            orientations[.iPad] ??
+            orientations[.any] ??
+            AnyView(iPadPortraitPlaceholder)
+    }
+
+    @ViewBuilder var iPadPortraitWithHomeButton: some View {
+            if let withHomeButton = orientations[.iPadPortraitWithHomeButton] {
+                withHomeButton
+            }
+            else if let withHomeButton = orientations[.iPadWithHomeButton] {
+                withHomeButton
+            }
+            else {
+                iPadPortraitIgnoringHomeButton
+            }
+    }
     
+    @ViewBuilder var iPadPortraitWithoutHomeButton: some View {
+            if let withHomeButton = orientations[.iPadPortraitWithHomeButton] {
+                withHomeButton
+            }
+            else if let withHomeButton = orientations[.iPadWithHomeButton] {
+                withHomeButton
+            }
+            else {
+                iPadPortraitIgnoringHomeButton
+            }
+    }
+
+    var iPadLandscapeIgnoringHomeButton: some View {
+        orientations[.iPadLandscape] ??
+            orientations[.iPad] ??
+            orientations[.any] ??
+            AnyView(iPadLandscapePlaceholder)
+    }
+
+    @ViewBuilder var iPadLandscapeWithHomeButton: some View {
+            if let withHomeButton = orientations[.iPadLandscapeWithHomeButton] {
+                withHomeButton
+            }
+            else if let withHomeButton = orientations[.iPadWithHomeButton] {
+                withHomeButton
+            }
+            else {
+                iPadLandscapeIgnoringHomeButton
+            }
+    }
+    
+    @ViewBuilder var iPadLandscapeWithoutHomeButton: some View {
+            if let withHomeButton = orientations[.iPadLandscapeWithHomeButton] {
+                withHomeButton
+            }
+            else if let withHomeButton = orientations[.iPadWithHomeButton] {
+                withHomeButton
+            }
+            else {
+                iPadLandscapeIgnoringHomeButton
+            }
+    }
+
     var iPad: some View {
         GeometryReader { geometry in
             ZStack {
                 if geometry.size.width < geometry.size.height {
-                    // check for homebutton-spcific layouts first
                     if HomeButtonDiscoverer.AssumingTrue.deviceHasPhysicalHomeButton {
-                        if let withHomeButton = orientations[.iPadPortraitWithHomeButton] {
-                            withHomeButton
-                        }
-                        if let withHomeButton = orientations[.iPadWithHomeButton] {
-                            withHomeButton
-                        }
-                    }
-                    else if let withoutHomeButton = orientations[.iPadPortraitWithoutHomeButton] {
-                        withoutHomeButton
-                    }
-                    else if let withoutHomeButton = orientations[.iPadWithoutHomeButton] {
-                        withoutHomeButton
+                        iPadPortraitWithHomeButton
                     }
                     else {
-                        // otherwise, travel down the path from more to less specific
-                        orientations[.iPadPortrait] ??
-                            orientations[.iPad] ??
-                            orientations[.any] ??
-                            AnyView(iPadPortraitPlaceholder)
+                        iPadPortraitWithoutHomeButton
                     }
                 }
                 else {
-                    // check for homebutton-spcific layouts first
                     if HomeButtonDiscoverer.AssumingTrue.deviceHasPhysicalHomeButton {
-                        if let withHomeButton = orientations[.iPadLandscapeWithHomeButton] {
-                            withHomeButton
-                        }
-                        if let withHomeButton = orientations[.iPadWithHomeButton] {
-                            withHomeButton
-                        }
-                    }
-                    else if let withoutHomeButton = orientations[.iPadLandscapeWithoutHomeButton] {
-                        withoutHomeButton
-                    }
-                    else if let withoutHomeButton = orientations[.iPadWithoutHomeButton] {
-                        withoutHomeButton
+                        iPadLandscapeWithHomeButton
                     }
                     else {
-                        // otherwise, travel down the path from more to less specific
-                        orientations[.iPadLandscape] ??
-                            orientations[.iPad] ??
-                            orientations[.any] ??
-                            AnyView(iPadLandscapePlaceholder)
+                        iPadLandscapeWithoutHomeButton
                     }
                 }
             }
